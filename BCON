@@ -1,0 +1,91 @@
+How to Create BCON:
+
+1. Create DL -> DL.DEFINE
+
+	Login from teraterm.
+	APPLICATION: DD
+	FUNCTION: I
+	NAME of DD
+	
+	Fill all required fields i.e 
+	GB DESCRIPTN
+	GB SHORT.DESC
+	LANGUAGE/COUNTRY
+	SELECT.LIST = SAVELIST NAME
+
+2. verify it.
+
+	APPLICATION: DD
+	FUNCTION: V
+	NAME of DD
+
+ICBR001-AC.STMT.20191210
+
+
+3. Create BCON, (BUILD.CONTROL)
+
+	Login from teraterm.
+	APPLICATION: BCON
+	FUNCTION: I
+	NAME of BCON
+	
+	Fill all required fields i.e 
+	GB Desc
+	MNEMONIC
+	ACTION = S
+	SAVE.PATH = .\F.BCON.DATA\SAVEDD
+	19.1 DL.DEFINE = DL.DEFINE NAME (FULL NAME)
+	80 CLR.PROCESS.LOG = Y
+	
+4. verify it.
+
+	APPLICATION: BCON
+	FUNCTION: V
+	NAME of BCON
+
+5. ZIP FILE
+goto SAVE folder path.
+
+tar -cvf - ICBR001-AC.STMT.20191210 | gzip > ICBR001-AC.STMT.20191210.tar.gz
+
+Send this zip file.
+
+How to deploy BCON to environment:
+copy the BCON in release folder
+
+1. Unzip/Untar file
+
+gunzip ICBR001-AC.STMT.20191210.tar.gz
+
+tar -xvf ICBR001-AC.STMT.20191210.tar
+
+2. BCON,
+R
+ofs.build.control
+
+
+
+****************************************** HOW TO DEPLOY BCON ON BTPN ******************************************************************
+
+1. Copy BCON from F.BCON.DATA/SAVE folder.
+
+2. Paste the BCON in F.BCON.DATA/RELEASE folder of the environment 
+where you want to deploy it.
+
+3. Login from teraterm.
+APPLICATION: BCON
+FUNCTION: I
+NAME of BCON
+
+Fill all required fields i.e 
+GB Desc
+MNEMONIC
+ACTION = R
+RELEASE.PATH = ./F.BCON.DATA/RELEASE     .\F.BCON.DATA\RELEASE
+OFS.SOURCE.ID = BUILD.CONTROL
+
+4. Verify it.
+
+	APPLICATION: BCON
+	FUNCTION: V
+	NAME of BCON
